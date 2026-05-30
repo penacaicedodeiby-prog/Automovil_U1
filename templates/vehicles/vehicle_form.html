@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — AutoLog{% endblock %}
+{% block content %}
+
+<div class="form-page-container">
+  <div class="form-card">
+    <div class="form-card-header">
+      <a href="{{ url_for('main.dashboard') }}" class="back-link">← Volver al garaje</a>
+      <h1>{{ title }}</h1>
+    </div>
+
+    <form method="POST" novalidate>
+      {{ form.hidden_tag() }}
+
+      <div class="form-row">
+        <div class="form-group">
+          {{ form.brand.label(class="form-label") }}
+          {{ form.brand(class="form-input" + (" input-error" if form.brand.errors else ""),
+                        placeholder="ej: Toyota") }}
+          {% if form.brand.errors %}
+            <ul class="field-errors">{% for e in form.brand.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+          {% endif %}
+        </div>
+        <div class="form-group">
+          {{ form.model.label(class="form-label") }}
+          {{ form.model(class="form-input" + (" input-error" if form.model.errors else ""),
+                        placeholder="ej: Corolla") }}
+          {% if form.model.errors %}
+            <ul class="field-errors">{% for e in form.model.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          {{ form.year.label(class="form-label") }}
+          {{ form.year(class="form-input" + (" input-error" if form.year.errors else ""),
+                       placeholder="ej: 2019") }}
+          {% if form.year.errors %}
+            <ul class="field-errors">{% for e in form.year.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+          {% endif %}
+        </div>
+        <div class="form-group">
+          {{ form.plate.label(class="form-label") }}
+          {{ form.plate(class="form-input" + (" input-error" if form.plate.errors else ""),
+                        placeholder="ej: ABC123") }}
+          {% if form.plate.errors %}
+            <ul class="field-errors">{% for e in form.plate.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline">Cancelar</a>
+        {{ form.submit(class="btn btn-primary") }}
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — AutoLog{% endblock %}
+{% block content %}
+
+<div class="form-page-container">
+  <div class="form-card">
+    <div class="form-card-header">
+      <a href="{{ url_for('vehicles.vehicle_records', vid=vehicle.id) }}" class="back-link">← Volver al historial</a>
+      <h1>{{ title }}</h1>
+      <p class="form-subtitle">{{ vehicle.brand }} {{ vehicle.model }} ({{ vehicle.year }}) — {{ vehicle.plate }}</p>
+    </div>
+
+    <form method="POST" novalidate>
+      {{ form.hidden_tag() }}
+
+      <div class="form-group">
+        {{ form.service_type.label(class="form-label") }}
+        {{ form.service_type(class="form-input form-select" + (" input-error" if form.service_type.errors else "")) }}
+        {% if form.service_type.errors %}
+          <ul class="field-errors">{% for e in form.service_type.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+        {% endif %}
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          {{ form.date.label(class="form-label") }}
+          {{ form.date(class="form-input" + (" input-error" if form.date.errors else "")) }}
+          {% if form.date.errors %}
+            <ul class="field-errors">{% for e in form.date.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+          {% endif %}
+        </div>
+        <div class="form-group">
+          {{ form.mileage.label(class="form-label") }}
+          {{ form.mileage(class="form-input" + (" input-error" if form.mileage.errors else ""),
+                          placeholder="ej: 45000") }}
+          {% if form.mileage.errors %}
+            <ul class="field-errors">{% for e in form.mileage.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          {{ form.cost.label(class="form-label") }}
+          {{ form.cost(class="form-input" + (" input-error" if form.cost.errors else ""),
+                       placeholder="ej: 85000") }}
+          {% if form.cost.errors %}
+            <ul class="field-errors">{% for e in form.cost.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+          {% endif %}
+        </div>
+        <div class="form-group">
+          {{ form.workshop.label(class="form-label") }}
+          {{ form.workshop(class="form-input" + (" input-error" if form.workshop.errors else ""),
+                           placeholder="ej: Taller El Mecánico") }}
+          {% if form.workshop.errors %}
+            <ul class="field-errors">{% for e in form.workshop.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-group">
+        {{ form.description.label(class="form-label") }}
+        {{ form.description(class="form-input form-textarea" + (" input-error" if form.description.errors else ""),
+                            placeholder="Descripción adicional del servicio realizado (opcional)...",
+                            rows=3) }}
+        {% if form.description.errors %}
+          <ul class="field-errors">{% for e in form.description.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+        {% endif %}
+      </div>
+
+      <div class="form-actions">
+        <a href="{{ url_for('vehicles.vehicle_records', vid=vehicle.id) }}" class="btn btn-outline">Cancelar</a>
+        {{ form.submit(class="btn btn-primary") }}
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

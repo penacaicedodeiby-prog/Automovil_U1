@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}AutoLog — Registro de Mantenimiento Vehicular{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Seguridad Cloud · DevSecOps</div>
+    <h1 class="hero-title">Tu vehículo,<br><span class="accent">siempre al día.</span></h1>
+    <p class="hero-sub">AutoLog te ayuda a registrar cada servicio, gasto y mantenimiento de tu vehículo. Historial completo, recordatorios y estadísticas, todo en un solo lugar.</p>
+    <div class="hero-actions">
+      <a href="{{ url_for('auth.signup') }}" class="btn btn-primary">Empezar gratis</a>
+      <a href="{{ url_for('auth.signin') }}" class="btn btn-outline">Ya tengo cuenta</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="visual-card">
+      <div class="vc-icon">🚗</div>
+      <div class="vc-label">Vehículos registrados</div>
+      <div class="vc-value">Ilimitados</div>
+    </div>
+    <div class="visual-card">
+      <div class="vc-icon">🔩</div>
+      <div class="vc-label">Tipos de servicio</div>
+      <div class="vc-value">+14 categorías</div>
+    </div>
+    <div class="visual-card">
+      <div class="vc-icon">💰</div>
+      <div class="vc-label">Control de gastos</div>
+      <div class="vc-value">Por vehículo</div>
+    </div>
+  </div>
+</section>
+
+<section class="features">
+  <h2 class="section-title">¿Qué puedes hacer con AutoLog?</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📋</div>
+      <h3>Historial completo</h3>
+      <p>Registra cada cambio de aceite, revisión, reparación o servicio con fecha, kilometraje y costo.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔍</div>
+      <h3>Búsqueda rápida</h3>
+      <p>Filtra tus registros por tipo de servicio para encontrar cualquier mantenimiento al instante.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <h3>Estadísticas de gasto</h3>
+      <p>Visualiza cuánto has invertido en cada vehículo y cuántos servicios llevas registrados.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3>Datos seguros</h3>
+      <p>Tu información está protegida con cifrado, sesiones seguras y buenas prácticas de seguridad cloud.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <h2>¿Listo para organizar el mantenimiento de tu vehículo?</h2>
+  <a href="{{ url_for('auth.signup') }}" class="btn btn-primary btn-lg">Crear mi cuenta gratis</a>
+</section>
+
+{% endblock %}

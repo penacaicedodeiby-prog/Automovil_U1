@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Mi garaje — AutoLog{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Mi garaje</h1>
+    <p class="page-sub">Aquí están todos tus vehículos registrados.</p>
+  </div>
+  <a href="{{ url_for('vehicles.new_vehicle') }}" class="btn btn-primary">+ Agregar vehículo</a>
+</div>
+
+{% if vehicles %}
+  <div class="vehicles-grid">
+    {% for v in vehicles %}
+    <div class="vehicle-card">
+      <div class="vehicle-header">
+        <div class="vehicle-icon">🚗</div>
+        <div class="vehicle-meta">
+          <h2 class="vehicle-name">{{ v.brand }} {{ v.model }}</h2>
+          <span class="vehicle-year-plate">{{ v.year }} · {{ v.plate }}</span>
+        </div>
+      </div>
+      <div class="vehicle-stats">
+        <div class="stat-item">
+          <span class="stat-label">Servicios</span>
+          <span class="stat-value">{{ stats[v.id].count }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Total gastado</span>
+          <span class="stat-value">${{ "{:,.0f}".format(stats[v.id].total) }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Último servicio</span>
+          <span class="stat-value">
+            {% if stats[v.id].last %}
+              {{ stats[v.id].last.date.strftime('%d/%m/%Y') }}
+            {% else %}
+              Sin registros
+            {% endif %}
+          </span>
+        </div>
+      </div>
+      <div class="vehicle-actions">
+        <a href="{{ url_for('vehicles.vehicle_records', vid=v.id) }}" class="btn btn-primary btn-sm">Ver historial</a>
+        <a href="{{ url_for('vehicles.edit_vehicle', vid=v.id) }}" class="btn btn-outline btn-sm">Editar</a>
+        <form action="{{ url_for('vehicles.delete_vehicle', vid=v.id) }}" method="POST"
+              onsubmit="return confirm('¿Eliminar este vehículo y todos sus registros?');" style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty-state">
+    <div class="empty-icon">🚗</div>
+    <h2>Aún no tienes vehículos registrados</h2>
+    <p>Agrega tu primer vehículo para comenzar a llevar el historial de mantenimiento.</p>
+    <a href="{{ url_for('vehicles.new_vehicle') }}" class="btn btn-primary">Agregar mi primer vehículo</a>
+  </div>
+{% endif %}
+
+{% endblock %}

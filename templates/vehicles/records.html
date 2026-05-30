@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}{{ vehicle.brand }} {{ vehicle.model }} — AutoLog{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <a href="{{ url_for('main.dashboard') }}" class="back-link">← Mi garaje</a>
+    <h1 class="page-title">{{ vehicle.brand }} {{ vehicle.model }}</h1>
+    <p class="page-sub">{{ vehicle.year }} · {{ vehicle.plate }} · Total gastado: <strong>${{ "{:,.0f}".format(total_cost) }} COP</strong></p>
+  </div>
+  <a href="{{ url_for('vehicles.new_record', vid=vehicle.id) }}" class="btn btn-primary">+ Nuevo registro</a>
+</div>
+
+<div class="search-bar-wrapper">
+  <form method="GET" class="search-form">
+    <input type="text" name="q" value="{{ q }}" class="form-input search-input"
+           placeholder="Buscar por tipo de servicio...">
+    <button type="submit" class="btn btn-outline">Buscar</button>
+    {% if q %}
+      <a href="{{ url_for('vehicles.vehicle_records', vid=vehicle.id) }}" class="btn btn-outline">Limpiar</a>
+    {% endif %}
+  </form>
+</div>
+
+{% if records %}
+  <div class="records-table-wrapper">
+    <table class="records-table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Tipo de servicio</th>
+          <th>Kilometraje</th>
+          <th>Taller</th>
+          <th>Costo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in records %}
+        <tr>
+          <td>{{ r.date.strftime('%d/%m/%Y') }}</td>
+          <td>
+            <span class="service-badge">{{ r.service_type }}</span>
+            {% if r.description %}
+              <span class="record-desc">{{ r.description }}</span>
+            {% endif %}
+          </td>
+          <td>{% if r.mileage %}{{ "{:,}".format(r.mileage) }} km{% else %}—{% endif %}</td>
+          <td>{{ r.workshop or '—' }}</td>
+          <td class="cost-cell">${{ "{:,.0f}".format(r.cost) }}</td>
+          <td class="actions-cell">
+            <a href="{{ url_for('vehicles.edit_record', rid=r.id) }}" class="btn btn-outline btn-xs">Editar</a>
+            <form action="{{ url_for('vehicles.delete_record', rid=r.id) }}" method="POST"
+                  onsubmit="return confirm('¿Eliminar este registro?');" style="display:inline;">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn btn-danger btn-xs">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td colspan="4"><strong>Total</strong></td>
+          <td class="cost-cell"><strong>${{ "{:,.0f}".format(total_cost) }}</strong></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+{% else %}
+  <div class="empty-state">
+    <div class="empty-icon">🔩</div>
+    {% if q %}
+      <h2>Sin resultados para "{{ q }}"</h2>
+      <a href="{{ url_for('vehicles.vehicle_records', vid=vehicle.id) }}" class="btn btn-outline">Ver todos los registros</a>
+    {% else %}
+      <h2>Aún no hay registros de mantenimiento</h2>
+      <p>Agrega el primer servicio de este vehículo.</p>
+      <a href="{{ url_for('vehicles.new_record', vid=vehicle.id) }}" class="btn btn-primary">Agregar primer registro</a>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% endblock %}
